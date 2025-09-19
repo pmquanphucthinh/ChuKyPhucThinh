@@ -27,7 +27,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>Phuc Thinh Group Signature</h1>
+    <h1>Phuc Thinh Group — Email Signature Generator</h1>
     <p class="sub">Nhập thông tin → bấm <strong>Tạo chữ ký</strong> → sao chép và dán vào phần <em>Signature</em> của Gmail/Outlook.</p>
 
     <form id="sigForm">
@@ -59,20 +59,6 @@
       </div>
       <div id="sigPreview" class="sig-wrap" aria-live="polite"></div>
     </div>
-
-    <details>
-      <summary>Thông tin công ty mặc định</summary>
-      <ul>
-        <li><strong>PHUCTHINH PTS.,JSC</strong></li>
-        <li>[A]: No.Room 26.01 Xala Commercial Center and Apartment, Phuc La Ward, Ha Dong District, Ha Noi City</li>
-        <li>[A]: No 16,small alley 97/4, Pham Ngoc Thach street, Dong Da dist., Ha Noi City, Viet Nam</li>
-        <li>[T]: (+84 24)22411351</li>
-        <li>[A]: 767(LK3-16), 766(LK3-17), 765(LK3-18), DATQUANG RIVERSIDE urban area, Dien Ngoc ward, Dien Ban town, Quang Nam province, Viet Nam</li>
-        <li>[B]: No 1/5B Linh Dong road, Thu Duc dist., Ho Chi Minh City, Viet Nam</li>
-        <li>[T]: (+84 28)22241666</li>
-        <li>[W]: http://phucthinhfood.com</li>
-      </ul>
-    </details>
   </div>
 
   <script>
@@ -93,6 +79,10 @@
     const sigPreview = document.getElementById('sigPreview');
 
     function escHtml(x){ return (x||'').replace(/[&<>]/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[s])) }
+
+    function highlightTags(line, color){
+      return line.replace(/^(\[[A-Z]\]:)/, `<span style="color:${color}; font-weight:700">$1</span>`);
+    }
 
     function buildSignatureHTML({fullName, title, mobile}){
       const color = '#f7941d';
@@ -122,8 +112,8 @@
           <td style="font-size:12px; color:#333; padding-bottom:6px"><span style="background:${color}; color:#fff; border-radius:12px; padding:2px 8px; font-weight:700">Mobile</span> <span style="padding-left:6px">${mobileHtml}</span></td>
         </tr>
         <tr><td style="height:8px"></td></tr>
-        <tr><td style="font-size:12px; color:#111; font-weight:700">${escHtml(defaultCompany.name)}</td></tr>
-        ${defaultCompany.lines.map(l=>`<tr><td style="font-size:12px; line-height:18px; color:#333">${escHtml(l)}</td></tr>`).join('')}
+        <tr><td style="font-size:12px; font-weight:700; color:${color}">${escHtml(defaultCompany.name)}</td></tr>
+        ${defaultCompany.lines.map(l=>`<tr><td style="font-size:12px; line-height:18px; color:#333">${highlightTags(escHtml(l), color)}</td></tr>`).join('')}
       </table>
     </td>
   </tr>
