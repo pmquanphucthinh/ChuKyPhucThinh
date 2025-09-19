@@ -53,8 +53,7 @@
 
     <div class="preview-card">
       <div class="stack">
-        <button class="btn" id="btnCopyHtml">Sao chép HTML</button>
-        <button class="btn secondary" id="btnCopyRich">Sao chép dạng Rich Text</button>
+        <button class="btn" id="btnCopyRich">Sao chép dạng Rich Text</button>
         <span class="hint">Mẹo: Gmail → Settings → See all settings → tab <b>General</b> → mục <b>Signature</b>.</span>
       </div>
       <div id="sigPreview" class="sig-wrap" aria-live="polite"></div>
@@ -130,16 +129,11 @@
       sigPreview.dataset.html = html;
     }
 
-    function copyHTML(){
-      const html = sigPreview.dataset.html || sigPreview.innerHTML;
-      navigator.clipboard.writeText(html).then(()=>toast('Đã sao chép HTML vào clipboard'));
-    }
-
     function copyRich(){
       const html = sigPreview.dataset.html || sigPreview.innerHTML;
       const blob = new Blob([html], {type: 'text/html'});
       const data = [new ClipboardItem({'text/html': blob})];
-      navigator.clipboard.write(data).then(()=>toast('Đã sao chép chữ ký (rich text). Hãy dán vào Gmail.')).catch(()=>copyHTML());
+      navigator.clipboard.write(data).then(()=>toast('Đã sao chép chữ ký (rich text). Hãy dán vào Gmail.')).catch(()=>{});
     }
 
     function toast(msg){
@@ -157,7 +151,6 @@
 
     document.getElementById('btnGenerate').addEventListener('click', generate);
     document.getElementById('btnReset').addEventListener('click', ()=>{document.getElementById('sigForm').reset(); generate();});
-    document.getElementById('btnCopyHtml').addEventListener('click', copyHTML);
     document.getElementById('btnCopyRich').addEventListener('click', copyRich);
 
     generate();
